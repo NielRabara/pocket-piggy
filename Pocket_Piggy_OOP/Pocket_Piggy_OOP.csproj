@@ -1,0 +1,104 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWPF>false</UseWPF>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibVLCSharp" Version="3.7.0" />
+    <PackageReference Include="LibVLCSharp.WinForms" Version="3.7.0" />
+    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.20" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="View_Business\Form1.cs" />
+    <Compile Remove="View_Business\Form1.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="View_Business\Form1.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="View_Business\BusinessQuestionnaire" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Chart.js" Version="3.7.1" />
+    <PackageReference Include="EPPlus" Version="8.2.1" />
+    <PackageReference Include="LLamaSharp" Version="0.25.0" />
+    <PackageReference Include="LLamaSharp.Backend.Cpu" Version="0.25.0" />
+    <PackageReference Include="MySql.Data" Version="9.4.0" />
+    <PackageReference Include="WinForms.DataVisualization" Version="1.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2592.51" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="View\Admin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="View\Bills.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="View\Expenses.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="View\Income.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="View\LogIn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="View\Menu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="View\Questionnaire.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="View\Saving.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="View\SignUp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Python\**" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="PocketPiggy.csproj" />
+    <None Include="PocketPiggyLogIn.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Copy SourceFiles="$(ProjectDir)PocketPiggyLogIn.mp4" 
+          DestinationFolder="$(TargetDir)" 
+          SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

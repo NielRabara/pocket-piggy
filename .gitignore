@@ -1,0 +1,96 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+[Tt]est[Rr]esults/
+*.cache
+*.ilk
+*.pdb
+*.obj
+*.exe
+*.dll
+*.appx
+*.appxsym
+*.appxupload
+*.nupkg
+*.snupkg
+*.msi
+*.msix
+*.msixupload
+*.msixbundle
+*.cab
+*.log
+
+# VS Code
+.vscode/
+
+# NuGet
+packages/
+*.nupkg
+.nuget/
+
+# Rider
+.idea/
+*.sln.iml
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Git
+*.orig
+*.rej
+
+# Publish
+publish/
+[Pp]ublish*/
+
+# WebView2 cache
+Pocket_Piggy_OOP/bin/**/Pocket_Piggy_OOP.exe.WebView2/
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Coverage
+coverage/
+*.coverage
+*.coveragexml
+
+# Python (if any)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+ENV/
+
+# Node (if any)
+node_modules/
+
+# OS X
+.DS_Store
+
+# Local tooling & snapshots
+Pocket_Piggy_OOP/.vs/
+Pocket_Piggy_OOP/.vs/**
+Pocket_Piggy_OOP/.vs/**/**
+
+# Temporary files
+*.tmp
+*.temp
+~$*
+
+# IDE caches
+/.vs/**
+**/.vs/**

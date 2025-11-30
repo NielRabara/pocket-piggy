@@ -1,0 +1,4 @@
+<ItemGroup>
+  <PackageReference Include="LibVLCSharp" Version="3.7.0" />
+  <PackageReference Include="LibVLCSharp.WinForms" Version="3.7.0" />
+</ItemGroup>

@@ -1,0 +1,200 @@
+Pocket Piggy OOP - Database Commands (MySQL)
+
+Engine/Driver: MySQL (MySql.Data.MySqlClient)
+Connection: See Models/Database.cs (uses env vars DB_SERVER, DB_NAME, DB_USER, DB_PASSWORD, DB_PORT)
+
+========================================
+DDL (CREATE TABLE)
+========================================
+
+- ViewModels/TransactionViewModel.cs
+  CREATE TABLE IF NOT EXISTS business_warnings (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      business_id INT NOT NULL,
+      message VARCHAR(500) NOT NULL,
+      ratio DECIMAL(10,4) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      INDEX idx_business (business_id)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+- View/Questionnaire.cs
+  CREATE TABLE IF NOT EXISTS questionnaire (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      username VARCHAR(50),
+      full_name VARCHAR(100),
+      age INT,
+      birth_month INT,
+      birth_day INT,
+      birth_year INT,
+      gender VARCHAR(20),
+      occupation VARCHAR(100),
+      source_of_income VARCHAR(100),
+      marital_status VARCHAR(50),
+      average_income DECIMAL(10,2),
+      monthly_spend DECIMAL(10,2),
+      expense_tracking VARCHAR(50),
+      financial_goal VARCHAR(100),
+      savings_goal VARCHAR(100),
+      confidence_level INT,
+      reminders_preference VARCHAR(50),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  );
+
+- View/Expenses.cs
+  CREATE TABLE IF NOT EXISTS allocations (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      username VARCHAR(100) NOT NULL,
+      plan_type VARCHAR(50) NOT NULL,
+      plan_id INT NOT NULL,
+      amount DECIMAL(10,2) NOT NULL,
+      date DATETIME NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+- View/Bills.cs
+  CREATE TABLE IF NOT EXISTS allocations (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      username VARCHAR(100) NOT NULL,
+      plan_type VARCHAR(50) NOT NULL,
+      plan_id INT NOT NULL,
+      amount DECIMAL(10,2) NOT NULL,
+      date DATETIME NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+- Repositories/QuestionnaireRepository.cs
+  CREATE TABLE IF NOT EXISTS questionnaire (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      user_type ENUM('business', 'personal'),
+      user_id INT,
+      /* ... other columns per repository definition ... */
+  );
+
+========================================
+SELECT (Reads)
+========================================
+
+- ViewModels/LoginViewModel.cs
+  SELECT user_id, username FROM users WHERE username = @username AND password = @password
+  SELECT business_id, username, business_name FROM business_users WHERE username = @username AND password = @password
+
+- View_Business/CashReserve.cs
+  SELECT transaction_id, date, description, amount
+  FROM business_transactions
+  WHERE business_id = @business_id AND type = 'Cash Reserve'
+  ORDER BY date ASC
+
+- View_Business/businessMain.cs
+  SELECT date, description, amount
+  FROM business_transactions
+  WHERE business_id = @business_id AND type = @type
+  ORDER BY date DESC
+
+  SELECT item_name, quantity, cost
+  FROM inventory
+  WHERE business_id = @business_id
+  ORDER BY id DESC
+
+- Other views may perform reads via models/viewmodels using Database.GetData(...)
+
+========================================
+INSERT (Creates)
+========================================
+
+- View/SignUp.cs
+  INSERT INTO users (username, password) VALUES (@username, @password)
+
+- ViewModels/SignUpViewModels.cs
+  INSERT INTO users (username, password) VALUES (@username, @password)
+
+- ViewModels/SignUpBusinessViewModel.cs
+  INSERT INTO business_users (username, password, business_name, business_address, contact_number, date_created)
+  VALUES (@username, @password, @business_name, @business_address, @contact_number, NOW())
+
+- ViewModels/QuestionnaireViewModels.cs
+  INSERT INTO questionnaire (user_id, full_name, age, birth_month, birth_day, birth_year, gender, occupation,
+                             source_of_income, marital_status, average_income, monthly_spend, expense_frequency, ...)
+  VALUES (... parameters ...)
+
+- View/Questionnaire.cs
+  INSERT INTO questionnaire (username, full_name, age, birth_month, birth_day, birth_year, gender, occupation,
+                             source_of_income, marital_status, average_income, monthly_spend, expense_tracking,
+                             financial_goal, savings_goal, confidence_level, reminders_preference)
+  VALUES (... parameters ...)
+
+- ViewModels/InventoryViewModel.cs
+  INSERT INTO inventory (business_id, item_name, quantity, cost, retail_price, supplier)
+  VALUES (@business_id, @item_name, @quantity, @cost, @retail_price, @supplier)
+
+- ViewModels/BusinessTransactionViewModel.cs
+  INSERT INTO business_transactions (business_id, date, description, amount, type, category)
+  VALUES (@business_id, @date, @desc, @amount, @type, @category)
+
+- View/Income.cs
+  INSERT INTO transactions (username, transaction_type, amount, date, description, category)
+  VALUES (@username, 'Income', @amount, NOW(), @description, @category)
+
+- View/Expenses.cs
+  INSERT INTO transactions (username, transaction_type, amount, date, description, category, type)
+  VALUES (@username, 'ExpensePlan', @amount, @date, @description, @category, @type)
+
+  INSERT INTO allocations (username, plan_type, plan_id, amount, date)
+  VALUES (@u, @t, @pid, @amt, NOW())
+
+  INSERT INTO transactions (username, transaction_type, amount, date, description, category)
+  VALUES (@u, 'Allocation', @negAmt, NOW(), CONCAT('Allocation to ', @t, ' #', @pid), 'Allocation')
+
+- View/Bills.cs
+  INSERT INTO transactions (username, transaction_type, amount, date, description, category)
+  VALUES (@username, 'BillPlan', @amount, @date, @description, @category)
+
+  INSERT INTO allocations (username, plan_type, plan_id, amount, date)
+  VALUES (@u, @t, @pid, @amt, NOW())
+
+  INSERT INTO transactions (username, transaction_type, amount, date, description, category)
+  VALUES (@u, 'Allocation', @negAmt, NOW(), CONCAT('Allocation to ', @t, ' #', @pid), 'Allocation')
+
+- View/Saving.cs
+  INSERT INTO goals (username, goal_name, goal_amount, progress, date_created, due_date)
+  VALUES (@username, @goal_name, @goal_amount, 0, NOW(), @due_date)
+
+  INSERT INTO transactions (username, transaction_type, amount, date, description, category)
+  VALUES (@u, 'Allocation', @negAmt, NOW(), CONCAT('Allocation to Goal #', @gid), 'Savings')
+
+- ViewModels/TransactionViewModel.cs (warnings)
+  INSERT INTO business_warnings (business_id, message, ratio)
+  VALUES (@business_id, @message, @ratio)
+
+========================================
+UPDATE (Modifies)
+========================================
+
+- View_Business/Receivables.cs
+  UPDATE business_transactions SET status = @status WHERE transaction_id = @id
+
+  UPDATE business_transactions
+  SET vendor = @vendor, description = @desc, amount = @amount, date = @date
+  WHERE transaction_id = @id
+
+- View_Business/CashReserve.cs
+  UPDATE business_transactions
+  SET description = @desc, amount = @amount, date = @date
+  WHERE transaction_id = @id AND business_id = @business_id
+
+========================================
+DELETE (Removes)
+========================================
+
+- View_Business/Receivables.cs
+  DELETE FROM business_transactions WHERE transaction_id = @id
+
+- View_Business/CashReserve.cs
+  DELETE FROM business_transactions WHERE transaction_id = @id AND business_id = @business_id
+
+========================================
+Notes
+========================================
+- All queries are parameterized using MySqlParameter (e.g., @username, @password, etc.).
+- Database helper methods in Models/Database.cs:
+  - GetData(sql, params) -> DataTable (SELECT)
+  - ExecuteQuery(sql, params) -> non-query (INSERT/UPDATE/DELETE/DDL)
+  - ExecuteScalar(sql, params) -> single value
+- Connection string uses Charset=utf8mb4; SslMode=None by default.
