@@ -487,13 +487,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Developer**: Niel Rabara
 - **Email**: nrRabara@mcm.edu.ph
+- **Email**: nielrabara90@gmail.com
 - **GitHub**: [@NielRabara](https://github.com/NielRabara)
+- **Discoer**: shun1o
 
 - **Developer**: Sittie Almaira S. Palanggalan
 - **Email**: alamirap.921@gmail.com
 - **GitHub**: [@aira219](https://github.com/aira219)
 
-- **Project Link**: [https://github.com/yourusername/pocket-piggy](https://github.com/yourusername/pocket-piggy)
+- **Project Link**: [https://github.com/yourusername/pocket-piggy]([https://github.com/yourusername/pocket-piggy](https://github.com/NielRabara/pocket-piggy.git))
 
 ---
 
