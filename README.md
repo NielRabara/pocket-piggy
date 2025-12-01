@@ -489,7 +489,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Email**: nrRabara@mcm.edu.ph
 - **Email**: nielrabara90@gmail.com
 - **GitHub**: [@NielRabara](https://github.com/NielRabara)
-- **Discoer**: shun1o
+- **Discord**: shun1o
+
 
 - **Developer**: Sittie Almaira S. Palanggalan
 - **Email**: alamirap.921@gmail.com
